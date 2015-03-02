@@ -1,4 +1,4 @@
-package eremc.asm;
+package eremc.asm.transformer;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 
@@ -11,6 +11,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
+import eremc.asm.EREMCCorePlugin;
 
 public class EMCMapperTransformer implements IClassTransformer, Opcodes
 {
@@ -28,7 +29,7 @@ public class EMCMapperTransformer implements IClassTransformer, Opcodes
 			basicClass = cw.toByteArray();
 			EREMCCorePlugin.logger.info("-------------------------Finish EREMC Transform-------------------------");
 		} catch (Exception e) {
-			throw new RuntimeException("failed : EREMCTransformer loading", e);
+			throw new RuntimeException("failed : EREMCMapperTransformer loading", e);
 		}
 		return basicClass;
 	}
@@ -79,8 +80,8 @@ public class EMCMapperTransformer implements IClassTransformer, Opcodes
 		/**
 		 *  アイテムに振られるIDは準備が完了するまでに振りなおされることがあるようで、
 		 *  最初にいきなりIDを取得＆登録してしまうと、後からIDを元に参照しようとした際には別のIDが割り振られてしまっていることが
-		 *  あるようだ。そうなるとIDから正しいアイテムを取得することができず、EMC値の登録が出来ない。
-		 *  なので最初はアイテムスタックを取得＆登録しておき、準備が完了しIDが固定されてから、アイテムスタックを元にIDを取得するように変更する。
+		 *  あります。そうなるとIDから正しいアイテムを取得することができず、EMC値の登録が出来ません。
+		 *  なので最初はアイテムスタックを取得＆登録しておき、準備が完了しIDが固定されてから、アイテムスタックを元にIDを取得するように変更。
 		 *
 		 *  そのための作業1つめ
 		 *  	Mapの引数をSimpleStackからItemStackに変更。

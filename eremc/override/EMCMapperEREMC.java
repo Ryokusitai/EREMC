@@ -1,4 +1,4 @@
-package eremc;
+package eremc.override;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * これはただのサンプルです。
- * 実際の書き換えはEMCMapperクラスを直接上書きしています。
+ * 実際の書き換えはProjectE上のEMCMapperクラスを直接上書きしています。
  * 書き換えるとこうなります。というだけのものです。
  *
  * 「//-------------------------------------------------------------------------------------------------------------------」
@@ -31,8 +31,11 @@ import net.minecraftforge.oredict.OreDictionary;
  *
  * 書き換え前の形はProjectEのソースコードでも見てください
  *
+ * ※これはProjectEのEMCMapperクラスをNBTTagに対応させるため一部書き換えたものです。
+ *   実際はこうなるようにProjectE上のクラスを直接ASMを利用して書き換えています。
+ *
  */
-public class EMCMapperPEAA
+public class EMCMapperEREMC
 {
 	public static LinkedHashMap<SimpleStack, Integer> emc = new LinkedHashMap<SimpleStack, Integer>();
 	//↓-------------------------------------------------------------------------------------------------------------------

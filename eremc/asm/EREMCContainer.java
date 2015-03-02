@@ -16,7 +16,7 @@ public class EREMCContainer extends DummyModContainer
 		ModMetadata meta = getMetadata();
 		meta.modId = "EREMCCore";
 		meta.name = "EREMCCore";
-		meta.version = "1.0.0";
+		meta.version = "@Verison@";
 		meta.authorList = Arrays.asList("ryokusitai");
 		meta.description = "entended registration EMC";
 		meta.url = "";

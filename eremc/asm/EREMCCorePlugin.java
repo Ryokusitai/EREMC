@@ -11,7 +11,9 @@ public class EREMCCorePlugin implements IFMLLoadingPlugin
 
 	@Override
 	public String[] getASMTransformerClass() {
-		return new String[]{"eremc.asm.EMCMapperTransformer"};
+		return new String[]{"eremc.asm.transformer.EMCMapperTransformer", "eremc.asm.transformer.SimpleStackTransformer",
+				"eremc.asm.transformer.ClientSyncEmcPKTTransformer", "eremc.asm.transformer.PacketHandlerTransformer",
+				"eremc.asm.transformer.ProjectEAPITransformer", "eremc.asm.transformer.NBTWhitelistTransformer"};
 	}
 
 	@Override

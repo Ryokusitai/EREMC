@@ -2,9 +2,14 @@ package eremc;
 
 import ic2.api.item.IC2Items;
 import moze_intel.projecte.api.ProjectEAPI;
+import moze_intel.projecte.emc.SimpleStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import buildcraft.transport.gates.GateDefinition;
+import buildcraft.transport.gates.ItemGate;
+import buildcraft.transport.gates.GateDefinition.GateLogic;
+import buildcraft.transport.gates.GateDefinition.GateMaterial;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
@@ -40,8 +45,31 @@ public class EmcHandler
 				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 1), 2960);
 				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 2), 840);
 				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 3), 840);
-				// ゲートにEMCを設定するには EMC登録の為の項目にNBTまで取得して判断するようにしないといけないかも
-				//ProjectEAPI.registerCustomEMC(ItemGate.makeGateItem(GateDefinition.GateMaterial.GOLD, GateDefinition.GateLogic.AND), 1);
+				// 一体型,タイマー型,コンパレータ型などはaddGateExpansionメソッドで設定できるのだと思う
+				ItemStack rs = ItemGate.makeGateItem(GateMaterial.REDSTONE, GateLogic.AND);
+				ItemStack iand = ItemGate.makeGateItem(GateDefinition.GateMaterial.IRON, GateDefinition.GateLogic.AND);
+				ItemStack ior = ItemGate.makeGateItem(GateDefinition.GateMaterial.IRON, GateDefinition.GateLogic.OR);
+				ItemStack gand = ItemGate.makeGateItem(GateDefinition.GateMaterial.GOLD, GateDefinition.GateLogic.AND);
+				ItemStack gor = ItemGate.makeGateItem(GateDefinition.GateMaterial.GOLD, GateDefinition.GateLogic.OR);
+				ItemStack dand = ItemGate.makeGateItem(GateDefinition.GateMaterial.DIAMOND, GateDefinition.GateLogic.AND);
+				ItemStack dor = ItemGate.makeGateItem(GateDefinition.GateMaterial.DIAMOND, GateDefinition.GateLogic.OR);
+				ProjectEAPI.registerCustomEMC(rs, 5296);
+				ProjectEAPI.registerCustomEMC(iand, 12240);
+				ProjectEAPI.registerCustomEMC(ior , 12240);
+				ProjectEAPI.registerCustomEMC(gand, 21088);
+				ProjectEAPI.registerCustomEMC(gor , 21088);
+				ProjectEAPI.registerCustomEMC(dand, 47344);
+				ProjectEAPI.registerCustomEMC(dor , 47344);
+
+				// NBTもちゃんとコピーするように設定
+				ProjectEAPI.registerCondenserNBTException(rs);
+				ProjectEAPI.registerCondenserNBTException(iand);
+				ProjectEAPI.registerCondenserNBTException(ior);
+				ProjectEAPI.registerCondenserNBTException(gand);
+				ProjectEAPI.registerCondenserNBTException(gor);
+				ProjectEAPI.registerCondenserNBTException(dand);
+				ProjectEAPI.registerCondenserNBTException(dor);
+
 			} catch (Exception e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -56,11 +84,11 @@ public class EmcHandler
 				if (ret instanceof Item)
 					item = (Item)ret;
 
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 0), 2560);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 1), 6400);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 2), 42240);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 3), 165120);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 4), 21760);
+				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 0), 1808);
+				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 1), 2320);
+				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 2), 5904);
+				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 3), 18192);
+				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 4), 9640);
 			} catch (Exception e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
