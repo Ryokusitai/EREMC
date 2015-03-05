@@ -1,4 +1,4 @@
-﻿package eremc.override;
+package eremc.override;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;

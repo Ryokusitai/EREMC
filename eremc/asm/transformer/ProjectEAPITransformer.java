@@ -10,6 +10,10 @@ import org.objectweb.asm.Opcodes;
 
 import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import eremc.asm.EREMCCorePlugin;
+import eremc.asm.transformer.SimpleStackTransformer.CustomMethodVisitor;
+import eremc.asm.transformer.SimpleStackTransformer.CustomMethodVisitor2;
+import eremc.asm.transformer.SimpleStackTransformer.CustomMethodVisitor3;
+import eremc.asm.transformer.SimpleStackTransformer.CustomMethodVisitor4;
 
 public class ProjectEAPITransformer implements IClassTransformer, Opcodes
 {

@@ -1,4 +1,4 @@
-﻿package eremc.override;
+package eremc.override;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import moze_intel.projecte.emc.SimpleStack;
@@ -34,7 +34,6 @@ public class SimpleStack
 		this.qnty = qnty;
 		this.damage = damage;
 		this.tag = null;
-		this.item = Item.getItemById(id);
 	}
 
 	// 引数にNBTTagを追加したコンストラクタ
@@ -64,7 +63,6 @@ public class SimpleStack
 
 	public boolean isValid()
 	{
-		reloadId();
 		return id != -1;
 	}
 
@@ -88,7 +86,6 @@ public class SimpleStack
 
 	public SimpleStack copy()
 	{
-		reloadId();
 		// tagも送る
 		return new SimpleStack(id, qnty, damage, tag);
 	}
@@ -96,14 +93,12 @@ public class SimpleStack
 	@Override
 	public int hashCode()
 	{
-		reloadId();
 		return id;
 	}
 
 	//**
-	// * returnの際にtagも判定するようにする
-	// * tag判定すると判別できないクラインの星とtag判定しないと判別できないゲートが矛盾してるので
-	// * とりあえずBuildCraftのアイテムのみを例外として判定するようにしました。
+	// * returnの判断条件に
+	// * ItemStack.areItemStacksEqual(this.toItemStack(), other.toItemStack() を追加
 	// *-/
 	@Override
 	public boolean equals(Object obj)
@@ -111,21 +106,15 @@ public class SimpleStack
 		if (obj instanceof SimpleStack)
 		{
 			SimpleStack other = (SimpleStack) obj;
-			// 先にタグ判定
-			NBTTagCompound newTag = new NBTTagCompound();
-			if (this.toString().indexOf("BuildCraft") != -1) {
-				if (!(ItemStack.areItemStackTagsEqual(this.toItemStack(), other.toItemStack()))) {
-					return false;
-				}
-			}
+
 			if (this.damage == OreDictionary.WILDCARD_VALUE || other.damage == OreDictionary.WILDCARD_VALUE)
 			{
 				//return this.id == other.id;
-				return this.qnty == other.qnty && this.getId() == other.getId(); /////
+				return this.qnty == other.qnty && this.id == other.id && ItemStack.areItemStacksEqual(this.toItemStack(), other.toItemStack()); /////
 			}
 
 			//return this.id == other.id && this.damage == other.damage;
-			return this.getId() == other.getId() && this.qnty == other.qnty && this.damage == other.damage; /////
+			return this.id == other.id && this.qnty == other.qnty && this.damage == other.damage && ItemStack.areItemStacksEqual(this.toItemStack(), other.toItemStack()); /////
 		}
 		return false;
 	}
@@ -144,20 +133,6 @@ public class SimpleStack
 		}
 
 		return "id:" + id + " damage:" + damage + " qnty:" + qnty + " " + tag;/////
-	}
-
-	public void reloadId() {
-		int id = Item.getIdFromItem(item);
-		if (id != 0) {
-			this.id = id;
-			return;
-		}
-		this.id = -1;
-	}
-
-	public int getId() {
-		reloadId();
-		return this.id;
 	}
 }
 //*/

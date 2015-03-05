@@ -1,4 +1,4 @@
-﻿package eremc.override;
+package eremc.override;
 
 import io.netty.buffer.ByteBuf;
 
