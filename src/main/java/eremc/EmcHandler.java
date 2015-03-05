@@ -2,14 +2,13 @@ package eremc;
 
 import ic2.api.item.IC2Items;
 import moze_intel.projecte.api.ProjectEAPI;
-import moze_intel.projecte.emc.SimpleStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import buildcraft.transport.gates.GateDefinition;
-import buildcraft.transport.gates.ItemGate;
 import buildcraft.transport.gates.GateDefinition.GateLogic;
 import buildcraft.transport.gates.GateDefinition.GateMaterial;
+import buildcraft.transport.gates.ItemGate;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
