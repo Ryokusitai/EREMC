@@ -1,14 +1,13 @@
 package eremc;
 
 import ic2.api.item.IC2Items;
+
+import java.lang.reflect.Method;
+
 import moze_intel.projecte.api.ProjectEAPI;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import buildcraft.transport.gates.GateDefinition;
-import buildcraft.transport.gates.GateDefinition.GateLogic;
-import buildcraft.transport.gates.GateDefinition.GateMaterial;
-import buildcraft.transport.gates.ItemGate;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
@@ -21,37 +20,41 @@ public class EmcHandler
 	/**
 	 * ic2のAPIを参考にしました。
 	 *
-	 * 雛形↓
-	 * ProjectEAPI.registerCustomEMC(IC2Items.getItem(""), );
-	 * ↑
 	 */
 	public static void registerEMC() {
 		checkLoad();
 
-		// バニラの板ガラスを追加(1EMC)
+		// バニラの板ガラスとエンドストーンにEMCを追加
 		ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.glass_pane, 1), 1);
+		ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.end_stone), 64);
 
 		if (EmcHandler.isLoadBCTp) {
 			try {
-				Class<?> bcTp = Class.forName("buildcraft.BuildCraftTransport");
+				IndefiniteClassLoader bcTp = new IndefiniteClassLoader("buildcraft.BuildCraftTransport");
+				Item wire = bcTp.getItem("pipeWire");
+				Item pipeItemStone = bcTp.getItem("pipeItemsStone");
+				Item pipeItemsCobblestone = bcTp.getItem("pipeItemsCobblestone");
+				// メソッド取得
+				IndefiniteClassLoader gateDefinition = new IndefiniteClassLoader("buildcraft.transport.gates.GateDefinition");
+				IndefiniteClassLoader bcItemGate = new IndefiniteClassLoader("buildcraft.transport.gates.ItemGate");
+				Method makeGateItem = bcItemGate.getMethod("makeGateItem", gateDefinition.getEnumAsClass("GateMaterial"), gateDefinition.getEnumAsClass("GateLogic"));
 
-				Item item = null;
-				Object ret = bcTp.getField("pipeWire").get(null);
-				if (ret instanceof Item)
-					item = (Item)ret;
-
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 0), 840);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 1), 2960);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 2), 840);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 3), 840);
+				// ワイヤー
+				ProjectEAPI.registerCustomEMC(new ItemStack(wire, 1, 0), 840);
+				ProjectEAPI.registerCustomEMC(new ItemStack(wire, 1, 1), 2960);
+				ProjectEAPI.registerCustomEMC(new ItemStack(wire, 1, 2), 840);
+				ProjectEAPI.registerCustomEMC(new ItemStack(wire, 1, 3), 840);
+				// 石と丸石のパイプ
+				ProjectEAPI.registerCustomEMC(new ItemStack(pipeItemStone), 1);
+				ProjectEAPI.registerCustomEMC(new ItemStack(pipeItemsCobblestone), 1);
 				// 一体型,タイマー型,コンパレータ型などはaddGateExpansionメソッドで設定できるのだと思う
-				ItemStack rs = ItemGate.makeGateItem(GateMaterial.REDSTONE, GateLogic.AND);
-				ItemStack iand = ItemGate.makeGateItem(GateDefinition.GateMaterial.IRON, GateDefinition.GateLogic.AND);
-				ItemStack ior = ItemGate.makeGateItem(GateDefinition.GateMaterial.IRON, GateDefinition.GateLogic.OR);
-				ItemStack gand = ItemGate.makeGateItem(GateDefinition.GateMaterial.GOLD, GateDefinition.GateLogic.AND);
-				ItemStack gor = ItemGate.makeGateItem(GateDefinition.GateMaterial.GOLD, GateDefinition.GateLogic.OR);
-				ItemStack dand = ItemGate.makeGateItem(GateDefinition.GateMaterial.DIAMOND, GateDefinition.GateLogic.AND);
-				ItemStack dor = ItemGate.makeGateItem(GateDefinition.GateMaterial.DIAMOND, GateDefinition.GateLogic.OR);
+				ItemStack rs = (ItemStack) makeGateItem.invoke(null, gateDefinition.getEnumField("GateMaterial", "REDSTONE"), gateDefinition.getEnumField("GateLogic", "AND"));
+				ItemStack iand = (ItemStack) makeGateItem.invoke(null, gateDefinition.getEnumField("GateMaterial", "IRON"), gateDefinition.getEnumField("GateLogic", "AND"));
+				ItemStack ior = (ItemStack) makeGateItem.invoke(null, gateDefinition.getEnumField("GateMaterial", "IRON"), gateDefinition.getEnumField("GateLogic", "OR"));
+				ItemStack gand = (ItemStack) makeGateItem.invoke(null, gateDefinition.getEnumField("GateMaterial", "GOLD"), gateDefinition.getEnumField("GateLogic", "AND"));
+				ItemStack gor = (ItemStack) makeGateItem.invoke(null, gateDefinition.getEnumField("GateMaterial", "GOLD"), gateDefinition.getEnumField("GateLogic", "OR"));
+				ItemStack dand = (ItemStack) makeGateItem.invoke(null, gateDefinition.getEnumField("GateMaterial", "DIAMOND"), gateDefinition.getEnumField("GateLogic", "AND"));
+				ItemStack dor = (ItemStack) makeGateItem.invoke(null, gateDefinition.getEnumField("GateMaterial", "DIAMOND"), gateDefinition.getEnumField("GateLogic", "OR"));
 				ProjectEAPI.registerCustomEMC(rs, 5296);
 				ProjectEAPI.registerCustomEMC(iand, 12240);
 				ProjectEAPI.registerCustomEMC(ior , 12240);
@@ -70,7 +73,6 @@ public class EmcHandler
 				ProjectEAPI.registerCondenserNBTException(dor);
 
 			} catch (Exception e) {
-				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
 		}
@@ -89,69 +91,74 @@ public class EmcHandler
 				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 3), 18192);
 				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 4), 9640);
 			} catch (Exception e) {
-				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
 		}
 		if (EmcHandler.isLoadIC2) {
-			// 合金
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("mixedMetalIngot"), 2016);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("advancedAlloy"), 2016);
+			try {
+			IndefiniteClassLoader ic2Items = new IndefiniteClassLoader("ic2.api.item.IC2Items");
+			Method getItem = ic2Items.getMethod("getItem", String.class);
+				// 合金
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "mixedMetalIngot"), 2016);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "advancedAlloy"), 2016);
 
-			// プレート
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("platecopper"), 128);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("platetin"),  256);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("platebronze"), 160);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("plategold"), 2048);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("plateiron"), 256);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("platelead"), 512);
+				// プレート
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "platecopper"), 128);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "platetin"),  256);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "platebronze"), 160);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "plategold"), 2048);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "plateiron"), 256);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "platelead"), 512);
 
-			// ケーシング
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("casingcopper"), 64);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("casingtin"), 128);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("casingbronze"), 80);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("casinggold"), 1024);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("casingiron"), 128);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("casinglead"), 256);
+				// ケーシング
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casingcopper"), 64);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casingtin"), 128);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casingbronze"), 80);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casinggold"), 1024);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casingiron"), 128);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casinglead"), 256);
 
-			// ケーブル
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("copperCableItem"), 64);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("tinCableItem"), 85);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("goldCableItem"), 512);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("ironCableItem"), 64);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("insulatedCopperCableItem"), 96);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("insulatedTinCableItem"), 117);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("insulatedGoldCableItem"), 576);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("insulatedIronCableItem"), 160);
+				// ケーブル
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "copperCableItem"), 64);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "tinCableItem"), 85);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "goldCableItem"), 512);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "ironCableItem"), 64);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedCopperCableItem"), 96);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedTinCableItem"), 117);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedGoldCableItem"), 576);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedIronCableItem"), 160);
 
-			// 強化ガラス・石材
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("reinforcedGlass"), 4039);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("reinforcedStone"), 4039);
+				// 強化ガラス・石材
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "reinforcedGlass"), 4039);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "reinforcedStone"), 4039);
 
-			// 電池
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("reBattery"), 757);
+				// 電池
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "reBattery"), 757);
 
-			// セル
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("cell"), 85);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("lavaCell"), 149);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("waterCell"), 85);
+				// セル
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "cell"), 85);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "lavaCell"), 149);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "waterCell"), 85);
 
-			// フェンス
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("ironFence"), 128);
+				// フェンス
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "ironFence"), 128);
 
-			// 足場
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("scaffold"), 9);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("ironScaffold"), 120);
+				// 足場
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "scaffold"), 9);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "ironScaffold"), 120);
 
-			// ツリータップ
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("treetap"), 40);
+				// ツリータップ
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "treetap"), 40);
 
-			// ラバーシート
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("rubberSapling"), 64);
+				// ラバーシート
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "rubberSapling"), 64);
 
-			// コーヒー
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("coffeeBeans"), 64);
-			ProjectEAPI.registerCustomEMC(IC2Items.getItem("coffeePowder"), 64);
+				// コーヒー
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "coffeeBeans"), 64);
+				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "coffeePowder"), 64);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		}
 
