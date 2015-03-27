@@ -1,4 +1,4 @@
-package eremc.override;
+﻿package eremc.override;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -26,7 +26,7 @@ import java.util.Map;
  *   実際はこうなるようにProjectE上のクラスを直接ASMを利用して書き換えています。
  *
  */
-/*
+//*
 public final class PacketHandler
 {
 	private static final int MAX_PKT_SIZE = 256;

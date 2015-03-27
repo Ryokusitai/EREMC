@@ -1,4 +1,4 @@
-package eremc.override;
+﻿package eremc.override;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import moze_intel.projecte.emc.SimpleStack;
@@ -18,7 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
  *   実際はこうなるようにProjectE上のクラスを直接ASMを利用して書き換えています。
  *
  */
-/*
+//*
 public class SimpleStack
 {
 	public int id;

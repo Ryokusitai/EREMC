@@ -1,4 +1,4 @@
-package eremc.override;
+﻿package eremc.override;
 
 
 /**
@@ -15,7 +15,8 @@ package eremc.override;
  *   実際はこうなるようにProjectE上のクラスを直接ASMを利用して書き換えています。
  *
  */
-/*public class EMCMapperEREMC
+//*
+public class EMCMapperEREMC
 {
 	public static LinkedHashMap<SimpleStack, Integer> emc = new LinkedHashMap<SimpleStack, Integer>();
 	//↓-------------------------------------------------------------------------------------------------------------------
