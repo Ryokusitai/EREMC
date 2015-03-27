@@ -1,25 +1,5 @@
 package eremc.override;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map.Entry;
-
-import moze_intel.projecte.emc.EMCMapper;
-import moze_intel.projecte.emc.FluidMapper;
-import moze_intel.projecte.emc.FuelMapper;
-import moze_intel.projecte.emc.RecipeInput;
-import moze_intel.projecte.emc.RecipeMapper;
-import moze_intel.projecte.emc.SimpleStack;
-import moze_intel.projecte.playerData.Transmutation;
-import moze_intel.projecte.utils.Utils;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * これはただのサンプルです。
@@ -31,11 +11,11 @@ import net.minecraftforge.oredict.OreDictionary;
  *
  * 書き換え前の形はProjectEのソースコードでも見てください
  *
- * ※これはProjectEのEMCMapperクラスをNBTTagに対応させるため一部書き換えたものです。
+ * ※これはProjectEのEMCMapperクラスを一部環境でも正常に動作するように書き換えたものです。
  *   実際はこうなるようにProjectE上のクラスを直接ASMを利用して書き換えています。
  *
  */
-public class EMCMapperEREMC
+/*public class EMCMapperEREMC
 {
 	public static LinkedHashMap<SimpleStack, Integer> emc = new LinkedHashMap<SimpleStack, Integer>();
 	//↓-------------------------------------------------------------------------------------------------------------------
@@ -578,33 +558,33 @@ public class EMCMapperEREMC
 		addMapping("dustSulfur", 32);
 
 		//Ingots (blocks will get auto-mapped)
-		/*Vanilla*/
+		/*Vanilla*-/
 		addMapping("ingotIron", 256);
 		addMapping("ingotGold", 2048);
-		/*General*/
+		/*General*-/
 		addMapping("ingotCopper", 128);
 		addMapping("ingotTin", 256);
 		addMapping("ingotBronze", 160);
 		addMapping("ingotSilver", 512);
 		addMapping("ingotLead", 512);
 		addMapping("ingotNickel", 1024);
-		/*TE*/
+		/*TE*-/
 		addMapping("ingotSignalum", 256);
 		addMapping("ingotLumium", 512);
 		addMapping("ingotInvar", 512);
 		addMapping("ingotElectrum", 1280);
 		addMapping("ingotEnderium", 4096);
 		addMapping("ingotPlatinum", 4096);
-		/*TiCon*/
+		/*TiCon*-/
 		addMapping("ingotAluminum", 128);
 		addMapping("ingotAluminumBrass", 512);
 		addMapping("ingotArdite", 1024);
 		addMapping("ingotCobalt", 1024);
 		addMapping("ingotManyullyn", 2048);
 		addMapping("ingotAlumite", 1024);
-		/*TC*/
+		/*TC*-/
 		addMapping("ingotThaumium", 2048);
-		/*Ender IO*/
+		/*Ender IO*-/
 		addMapping("itemSilicon", 32);
 		addMapping("ingotPhasedIron", 1280);
 		addMapping("ingotPhasedGold", 3520);
@@ -614,7 +594,7 @@ public class EMCMapperEREMC
 		addMapping("ingotElectricalSteel", 352);
 		addMapping("ingotDarkSteel", 384);
 		addMapping("ingotSoularium", 2097);
-		/*Mekanism*/
+		/*Mekanism*-/
 		addMapping("ingotOsmium", 2496);
 
 		//AE2
@@ -729,4 +709,4 @@ public class EMCMapperEREMC
 		addRelativeEmcValue("ThermalExpansion:Frame", 8, "ThermalExpansion:Frame", 7, 1, "minecraft:ender_pearl", 0, 4);
 		addRelativeEmcValue("ingotSteel", 0, "minecraft:iron_ingot", 0, 1, "minecraft:coal", 1, 4);
 	}
-}
+}*/

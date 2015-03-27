@@ -2,6 +2,7 @@ package eremc;
 
 import java.lang.reflect.Method;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
 public class IndefiniteClassLoader
@@ -41,6 +42,14 @@ public class IndefiniteClassLoader
 			return (Item)ret;
 		}
 		throw new NullPointerException(itemName + "という名前のアイテムは存在しません");
+	}
+
+	public Block getBlock(String blockName) {
+		Object ret = getField(blockName);
+		if (ret instanceof Block) {
+			return (Block)ret;
+		}
+		throw new NullPointerException(blockName + "という名前のブロックは存在しません");
 	}
 
 	public Class getLoadClass() {

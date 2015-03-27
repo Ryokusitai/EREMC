@@ -1,10 +1,9 @@
 package eremc;
 
-import ic2.api.item.IC2Items;
-
 import java.lang.reflect.Method;
 
 import moze_intel.projecte.api.ProjectEAPI;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,6 +15,7 @@ public class EmcHandler
 	private static boolean isLoadBCTp = false;
 	private static boolean isLoadBCSl = false;
 	private static boolean isLoadIC2 = false;
+	private static boolean isLoadEUtil = false;
 
 	/**
 	 * ic2のAPIを参考にしました。
@@ -27,7 +27,8 @@ public class EmcHandler
 		// バニラの板ガラスとエンドストーンにEMCを追加
 		ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.glass_pane, 1), 1);
 		ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.end_stone), 64);
-
+		// ExtraUtilitiesの関係で石のハーフブロックに登録
+		ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.stone_slab, 1), 1);
 		if (EmcHandler.isLoadBCTp) {
 			try {
 				IndefiniteClassLoader bcTp = new IndefiniteClassLoader("buildcraft.BuildCraftTransport");
@@ -96,8 +97,8 @@ public class EmcHandler
 		}
 		if (EmcHandler.isLoadIC2) {
 			try {
-			IndefiniteClassLoader ic2Items = new IndefiniteClassLoader("ic2.api.item.IC2Items");
-			Method getItem = ic2Items.getMethod("getItem", String.class);
+				IndefiniteClassLoader ic2Items = new IndefiniteClassLoader("ic2.api.item.IC2Items");
+				Method getItem = ic2Items.getMethod("getItem", String.class);
 				// 合金
 				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "mixedMetalIngot"), 2016);
 				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "advancedAlloy"), 2016);
@@ -161,6 +162,30 @@ public class EmcHandler
 			}
 
 		}
+		// ExtraUtilitiesの登録処理 (素材のEmc合計そのままで設定)
+		if (EmcHandler.isLoadEUtil) {
+			try {
+				IndefiniteClassLoader eUtil = new IndefiniteClassLoader("com.rwtema.extrautils.ExtraUtils");
+				Block transferNodeRemote = eUtil.getBlock("transferNodeRemote");
+				Block transferNode		 = eUtil.getBlock("transferNode");
+				Item  nodeUpgrade		 = eUtil.getItem("nodeUpgrade");
+				Block enderQuarryUpgrade = eUtil.getBlock("enderQuarryUpgrade");
+				Block enderMarker		 = eUtil.getBlock("enderMarker");
+				Block magnumTorch		 = eUtil.getBlock("magnumTorch");
+
+				ProjectEAPI.registerCustomEMC(new ItemStack(transferNodeRemote, 1, 0), 19990);	// (Items)
+				ProjectEAPI.registerCustomEMC(new ItemStack(transferNodeRemote, 1, 6), 17426);	// (Liquids)
+				ProjectEAPI.registerCustomEMC(new ItemStack(transferNode, 1, 12), 14941);		// (Energy)
+				ProjectEAPI.registerCustomEMC(new ItemStack(transferNode, 1, 13), 162652);		// (Hyper Energy)
+				ProjectEAPI.registerCustomEMC(new ItemStack(nodeUpgrade, 1, 5), 5768);			// (Transmitter)
+				ProjectEAPI.registerCustomEMC(new ItemStack(nodeUpgrade, 1, 6), 5952);			// (Receiver)
+				ProjectEAPI.registerCustomEMC(new ItemStack(enderQuarryUpgrade, 1, 0), 2322);	// (Base)
+				ProjectEAPI.registerCustomEMC(new ItemStack(enderMarker), 1664);
+				ProjectEAPI.registerCustomEMC(new ItemStack(magnumTorch), 68430);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 
@@ -173,6 +198,9 @@ public class EmcHandler
 				EmcHandler.isLoadBCSl = true;
 			if (mod.getModId().equals("IC2"))
 				EmcHandler.isLoadIC2 = true;
+			// ExtraUtilitiesを追加
+			if (mod.getModId().equals("ExtraUtilities"))
+				EmcHandler.isLoadEUtil = true;
 		}
 
 	}
