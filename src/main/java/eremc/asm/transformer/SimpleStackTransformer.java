@@ -490,6 +490,15 @@ public class SimpleStackTransformer implements IClassTransformer, Opcodes
 			}
 		}
 
+		public void visitJumpInsn(int opcode, Label label) {
+			super.visitJumpInsn(opcode, label);
+			// reloadId(); 追加
+			if (opcode == IFEQ) {
+				mv.visitVarInsn(ALOAD, 0);
+				mv.visitMethodInsn(INVOKEVIRTUAL, "moze_intel/projecte/emc/SimpleStack", "reloadId", "()V", false);
+			}
+		}
+
 	}
 
 	/**

@@ -14,7 +14,7 @@ public class MethodNameList
 	}
 
 	// デバッグ時と実際の環境での動作時ではメソッド名が変わるためその切り替えを行う
-	private final boolean DEBUG = false;
+	private final boolean DEBUG = true;//false;
 
 	private Map<String, String> methodNameList = new HashMap<String,String>();
 	private MethodNameList() {// areItemStacksEqual = func_77970_a		雛形 : methodNameList.put("","");
@@ -25,6 +25,9 @@ public class MethodNameList
 		methodNameList.put("getIdFromItem","func_150891_b");
 		methodNameList.put("getItem","func_77973_b");
 		methodNameList.put("areItemStackTagsEqual","func_77970_a");
+		methodNameList.put("hasTagCompound","func_77942_o");
+		methodNameList.put("setTagCompound","func_77982_d");
+		methodNameList.put("getDisplayName","func_82833_r");
 	}
 
 	public static String getName(String methodName) {

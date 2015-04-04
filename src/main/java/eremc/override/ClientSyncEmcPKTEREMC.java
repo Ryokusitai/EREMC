@@ -1,4 +1,4 @@
-package eremc.override;
+﻿package eremc.override;
 
 import io.netty.buffer.ByteBuf;
 
@@ -28,7 +28,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
  * ※これはProjectEのClientSyncEmcPKTクラスをNBTTagに対応させるため一部書き換えたものです。
  *   実際はこうなるようにProjectE上のクラスを直接ASMを利用して書き換えています。
  */
-/*
+//*
 public class ClientSyncEmcPKT implements IMessage, IMessageHandler<ClientSyncEmcPKT, IMessage>
 {
 	private int packetNum;

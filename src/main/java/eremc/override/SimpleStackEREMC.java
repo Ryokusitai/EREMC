@@ -72,6 +72,7 @@ public class SimpleStack
 	{
 		if (isValid())
 		{
+			reloadId();
 			Item item = Item.getItemById(id);
 
 			if (item != null)
