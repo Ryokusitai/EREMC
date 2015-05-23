@@ -24,9 +24,9 @@ public class EmcHandler
 	public static void registerEMC() {
 		checkLoad();
 
-		// バニラの板ガラスとエンドストーンにEMCを追加
+		// バニラの板ガラスにEMCを追加 (エンドストーンはPEが登録してくれたのでこちらでは何もしない
 		ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.glass_pane, 1), 1);
-		ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.end_stone), 64);
+		//ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.end_stone), 64);
 		// ExtraUtilitiesの関係で石のハーフブロックに登録
 		ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.stone_slab, 1), 1);
 		if (EmcHandler.isLoadBCTp) {
@@ -49,6 +49,8 @@ public class EmcHandler
 				ProjectEAPI.registerCustomEMC(new ItemStack(pipeItemStone), 1);
 				ProjectEAPI.registerCustomEMC(new ItemStack(pipeItemsCobblestone), 1);
 				// 一体型,タイマー型,コンパレータ型などはaddGateExpansionメソッドで設定できるのだと思う
+				// ProjectE1.4.5暫定対応時には使えないのでコメントアウト
+				/*
 				ItemStack rs = (ItemStack) makeGateItem.invoke(null, gateDefinition.getEnumField("GateMaterial", "REDSTONE"), gateDefinition.getEnumField("GateLogic", "AND"));
 				ItemStack iand = (ItemStack) makeGateItem.invoke(null, gateDefinition.getEnumField("GateMaterial", "IRON"), gateDefinition.getEnumField("GateLogic", "AND"));
 				ItemStack ior = (ItemStack) makeGateItem.invoke(null, gateDefinition.getEnumField("GateMaterial", "IRON"), gateDefinition.getEnumField("GateLogic", "OR"));
@@ -72,6 +74,7 @@ public class EmcHandler
 				ProjectEAPI.registerCondenserNBTException(gor);
 				ProjectEAPI.registerCondenserNBTException(dand);
 				ProjectEAPI.registerCondenserNBTException(dor);
+				*/
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -191,17 +194,10 @@ public class EmcHandler
 
 	private static void checkLoad()
 	{
-		for (ModContainer mod : Loader.instance().getModList()) {
-			if (mod.getModId().equals("BuildCraft|Transport"))
-				EmcHandler.isLoadBCTp = true;
-			if (mod.getModId().equals("BuildCraft|Silicon"))
-				EmcHandler.isLoadBCSl = true;
-			if (mod.getModId().equals("IC2"))
-				EmcHandler.isLoadIC2 = true;
-			// ExtraUtilitiesを追加
-			if (mod.getModId().equals("ExtraUtilities"))
-				EmcHandler.isLoadEUtil = true;
-		}
+		EmcHandler.isLoadBCTp = Loader.instance().isModLoaded("BuildCraft|Transport");
+		EmcHandler.isLoadBCSl = Loader.instance().isModLoaded("BuildCraft|Silicon");
+		EmcHandler.isLoadIC2  = Loader.instance().isModLoaded("IC2");
+		EmcHandler.isLoadEUtil = Loader.instance().isModLoaded("ExtraUtilities");
 
 	}
 
