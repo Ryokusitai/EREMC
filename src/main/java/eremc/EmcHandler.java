@@ -8,7 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
 
 public class EmcHandler
 {
@@ -25,10 +24,12 @@ public class EmcHandler
 		checkLoad();
 
 		// バニラの板ガラスにEMCを追加 (エンドストーンはPEが登録してくれたのでこちらでは何もしない
-		ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.glass_pane, 1), 1);
+		ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(Blocks.glass_pane, 1), 1);
 		//ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.end_stone), 64);
 		// ExtraUtilitiesの関係で石のハーフブロックに登録
-		ProjectEAPI.registerCustomEMC(new ItemStack(Blocks.stone_slab, 1), 1);
+		ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(Blocks.stone_slab, 1), 1);
+
+		// ここまでtest
 		if (EmcHandler.isLoadBCTp) {
 			try {
 				IndefiniteClassLoader bcTp = new IndefiniteClassLoader("buildcraft.BuildCraftTransport");
@@ -41,13 +42,13 @@ public class EmcHandler
 				Method makeGateItem = bcItemGate.getMethod("makeGateItem", gateDefinition.getEnumAsClass("GateMaterial"), gateDefinition.getEnumAsClass("GateLogic"));
 
 				// ワイヤー
-				ProjectEAPI.registerCustomEMC(new ItemStack(wire, 1, 0), 840);
-				ProjectEAPI.registerCustomEMC(new ItemStack(wire, 1, 1), 2960);
-				ProjectEAPI.registerCustomEMC(new ItemStack(wire, 1, 2), 840);
-				ProjectEAPI.registerCustomEMC(new ItemStack(wire, 1, 3), 840);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(wire, 1, 0), 840);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(wire, 1, 1), 2960);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(wire, 1, 2), 840);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(wire, 1, 3), 840);
 				// 石と丸石のパイプ
-				ProjectEAPI.registerCustomEMC(new ItemStack(pipeItemStone), 1);
-				ProjectEAPI.registerCustomEMC(new ItemStack(pipeItemsCobblestone), 1);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(pipeItemStone), 1);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(pipeItemsCobblestone), 1);
 				// 一体型,タイマー型,コンパレータ型などはaddGateExpansionメソッドで設定できるのだと思う
 				// ProjectE1.4.5暫定対応時には使えないのでコメントアウト
 				/*
@@ -89,11 +90,11 @@ public class EmcHandler
 				if (ret instanceof Item)
 					item = (Item)ret;
 
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 0), 1808);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 1), 2320);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 2), 5904);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 3), 18192);
-				ProjectEAPI.registerCustomEMC(new ItemStack(item, 1, 4), 9640);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(item, 1, 0), 1808);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(item, 1, 1), 2320);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(item, 1, 2), 5904);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(item, 1, 3), 18192);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(item, 1, 4), 9640);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -103,63 +104,63 @@ public class EmcHandler
 				IndefiniteClassLoader ic2Items = new IndefiniteClassLoader("ic2.api.item.IC2Items");
 				Method getItem = ic2Items.getMethod("getItem", String.class);
 				// 合金
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "mixedMetalIngot"), 2016);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "advancedAlloy"), 2016);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "mixedMetalIngot"), 2016);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "advancedAlloy"), 2016);
 
 				// プレート
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "platecopper"), 128);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "platetin"),  256);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "platebronze"), 160);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "plategold"), 2048);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "plateiron"), 256);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "platelead"), 512);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "platecopper"), 128);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "platetin"),  256);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "platebronze"), 160);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "plategold"), 2048);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "plateiron"), 256);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "platelead"), 512);
 
 				// ケーシング
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casingcopper"), 64);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casingtin"), 128);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casingbronze"), 80);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casinggold"), 1024);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casingiron"), 128);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "casinglead"), 256);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "casingcopper"), 64);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "casingtin"), 128);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "casingbronze"), 80);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "casinggold"), 1024);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "casingiron"), 128);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "casinglead"), 256);
 
 				// ケーブル
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "copperCableItem"), 64);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "tinCableItem"), 85);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "goldCableItem"), 512);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "ironCableItem"), 64);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedCopperCableItem"), 96);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedTinCableItem"), 117);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedGoldCableItem"), 576);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedIronCableItem"), 160);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "copperCableItem"), 64);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "tinCableItem"), 85);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "goldCableItem"), 512);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "ironCableItem"), 64);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedCopperCableItem"), 96);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedTinCableItem"), 117);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedGoldCableItem"), 576);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "insulatedIronCableItem"), 160);
 
 				// 強化ガラス・石材
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "reinforcedGlass"), 4039);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "reinforcedStone"), 4039);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "reinforcedGlass"), 4039);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "reinforcedStone"), 4039);
 
 				// 電池
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "reBattery"), 757);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "reBattery"), 757);
 
 				// セル
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "cell"), 85);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "lavaCell"), 149);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "waterCell"), 85);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "cell"), 85);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "lavaCell"), 149);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "waterCell"), 85);
 
 				// フェンス
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "ironFence"), 128);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "ironFence"), 128);
 
 				// 足場
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "scaffold"), 9);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "ironScaffold"), 120);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "scaffold"), 9);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "ironScaffold"), 120);
 
 				// ツリータップ
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "treetap"), 40);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "treetap"), 40);
 
 				// ラバーシート
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "rubberSapling"), 64);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "rubberSapling"), 64);
 
 				// コーヒー
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "coffeeBeans"), 64);
-				ProjectEAPI.registerCustomEMC((ItemStack) getItem.invoke(null, "coffeePowder"), 64);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "coffeeBeans"), 64);
+				ProjectEAPI.getEMCProxy().registerCustomEMC((ItemStack) getItem.invoke(null, "coffeePowder"), 64);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -176,20 +177,19 @@ public class EmcHandler
 				Block enderMarker		 = eUtil.getBlock("enderMarker");
 				Block magnumTorch		 = eUtil.getBlock("magnumTorch");
 
-				ProjectEAPI.registerCustomEMC(new ItemStack(transferNodeRemote, 1, 0), 19990);	// (Items)
-				ProjectEAPI.registerCustomEMC(new ItemStack(transferNodeRemote, 1, 6), 17426);	// (Liquids)
-				ProjectEAPI.registerCustomEMC(new ItemStack(transferNode, 1, 12), 14941);		// (Energy)
-				ProjectEAPI.registerCustomEMC(new ItemStack(transferNode, 1, 13), 162652);		// (Hyper Energy)
-				ProjectEAPI.registerCustomEMC(new ItemStack(nodeUpgrade, 1, 5), 5768);			// (Transmitter)
-				ProjectEAPI.registerCustomEMC(new ItemStack(nodeUpgrade, 1, 6), 5952);			// (Receiver)
-				ProjectEAPI.registerCustomEMC(new ItemStack(enderQuarryUpgrade, 1, 0), 2322);	// (Base)
-				ProjectEAPI.registerCustomEMC(new ItemStack(enderMarker), 1664);
-				ProjectEAPI.registerCustomEMC(new ItemStack(magnumTorch), 68430);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(transferNodeRemote, 1, 0), 19990);	// (Items)
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(transferNodeRemote, 1, 6), 17426);	// (Liquids)
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(transferNode, 1, 12), 14941);		// (Energy)
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(transferNode, 1, 13), 162652);		// (Hyper Energy)
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(nodeUpgrade, 1, 5), 5768);			// (Transmitter)
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(nodeUpgrade, 1, 6), 5952);			// (Receiver)
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(enderQuarryUpgrade, 1, 0), 2322);	// (Base)
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(enderMarker), 1664);
+				ProjectEAPI.getEMCProxy().registerCustomEMC(new ItemStack(magnumTorch), 68430);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	private static void checkLoad()
